@@ -1,0 +1,434 @@
+##########################################################  MYSQL  ##################################################
+DB:-	Storing of the data is called database.
+DBMS:-	Its stands from Database Management system. Its used to manipulate or managing the data. Its also used for do the crud operations.
+
+DBMS is classified in two types.
+	1.RDBMS(Relational Database Management System)--->Data can be stored in tabular format. Ex- MySQL, MariaDB, Oracle
+	2.NRDBMS(Non-Relational Database Management system)-->Data can't be store in tabular format. Ex-MongoDB
+
+
+##### practice SQL queries################
+-- create databaes
+create database if not exists practice;
+
+-- use the database for practice
+use practice;
+
+-- create the table employee;
+create table employee(
+id int primary key,
+name varchar(30),
+age int,
+emaill text
+); 
+
+-- insert the data in that employee table
+insert into employee (id,name,age ,emaill)
+values
+(105,"Siva",20,"siva@gmail.com"),
+(108,"Sai",21,"sai@gmail.com"),
+(110,"Riti",22,"Ritikumari@gmail.com"),
+(120,"Swathi",20,"Swathi2003@gmail.com");
+
+-- show the how many tables in given database
+show tables;
+
+-- show that the given table
+select * from employee;
+
+-- update the name sai to teja
+update employee
+set name="teja"
+where name ="sai";
+
+-- update the email is changed for id 105
+update employee
+set emaill="siva2003@gmail.com"
+where id=105;
+select * from employee;
+
+-- delete the row in name teja
+delete from employee
+where name="teja";
+select * from employee;
+
+-- add the column in the given table using alter
+alter table employee
+add salary bigint not null;
+select * from employee;
+
+-- drop a column by using alter
+alter table employee
+drop column salary;
+select * from employee;
+
+-- modify the datatype of the given column
+alter table employee
+modify age varchar(5);
+
+-- change the name of existing column name and datatype by using change clause
+alter table employee
+change age emp_age int;
+select * from employee;
+
+-- change the name of column by using rename clause
+alter table employee
+rename column emp_age to age;
+select * from employee;
+
+-- Rename the table name by using rename clause
+rename table employee to employe;
+
+
+create table orders(
+id int primary key,
+ord_name varchar(50),
+ord_des varchar(100)
+);
+
+insert into orders (id,ord_name,ord_des)
+values
+(1,"fan","It is used for home applications"),
+(2,"light","It is used for events"),
+(3,"formal wear","It is used to professionals");
+
+select * from orders;
+
+-- used the truncate command for orders table
+truncate table orders;
+select * from orders;
+
+-- drop the given table 
+drop table if exists orders;
+show tables;
+
+-- distinct clause
+select distinct age,name
+from employe;
+
+select * from employe;
+
+-- add 1 column
+alter table employe
+add column salary bigint ;
+
+alter table employe
+drop column salary;
+
+select * from employe;
+
+alter table employe
+add column salary bigint not null;
+
+update employe
+set salary=1500
+where salary=0;
+
+select * from employe;
+
+-- and operator
+select * from employe
+where age>20 and salary>=1500;
+
+-- or operator 
+select * from employe
+where age>20 or salary>=1500;
+
+-- not operator
+select * from employe
+where not age not in (20);
+
+-- in operator
+select * from employe
+where age in (22);
+
+-- not null/ is null operator
+select * from employe
+where age is not null;
+
+-- like & Wild card operators
+select * from employe
+where name like "_i%";
+
+select * from employe
+where name like "%h_";
+
+-- between operator 
+select * from employe
+where age between 20 and 21;
+
+select * from employe
+where id between 105 and 110;
+
+-- limit clause
+select * from employe
+limit 2;
+
+select * from employe
+limit 2,1;
+
+-- aggregation functions
+-- count()
+select count(id)
+from employe;
+
+select count(salary)
+from employe;
+
+-- sum()
+select sum(age)
+from employe;
+
+select sum(salary)
+from employe;
+
+-- max()
+select max(salary)
+from employe;
+
+select max(age)
+from employe;
+
+-- min()
+select min(salary)
+from employe;
+
+select min(age)
+from employe;
+
+-- avg()
+select avg(age)
+from employe;
+
+select avg(salary)
+from employe;
+
+-- order by clause
+select * from employe
+order by id desc;
+
+select * from employe
+order by name desc;
+
+select * from employe
+order by age desc;
+
+-- update the salary details 
+update employe 
+set salary=12000
+where age =20;
+
+update employe
+set salary=12300
+where id=105;
+
+select * from employe;
+
+-- sql query to fetch the details of 2 employees getting the maximun salary;
+select * from employe
+order by salary desc
+limit 2;
+
+-- add a column in department
+alter table employe
+add department varchar(30) not null;
+
+update employe
+set department="hr"
+where id=105;
+
+update employe 
+set department="finance"
+where id=110;
+
+update employe 
+set department="marketing"
+where id=120;
+
+select * from employe;
+
+-- group by clause
+select department, avg(salary)
+from employe 
+group by department;
+
+select department , max(salary)
+from employe 
+group by department;
+
+-- having clause
+select emp.department , avg(salary) as avgsal
+from employe emp
+group by emp.department
+having avgsal>=1500;
+
+-- joins - combining the rows of 2 or more tables.
+-- create a two tables customer (left) and orders (right) tables 
+create table customer(
+id int primary key,
+name varchar(30));
+
+insert into customer(id,name)
+values
+(101,"Ram"),
+(102,"Riti"),
+(103,"Siva");
+
+create table orders(
+id int primary key,
+c_name varchar(50));
+
+insert into orders (id,c_name)
+values
+(102,"Fruit"),
+(103,"Ball"),
+(104,"cat");
+
+-- inner join
+select customer.id, customer.name , orders.c_name
+from customer
+inner join orders
+on customer.id=orders.id;
+
+-- right join
+select * from customer
+right join orders
+on customer.id=orders.id;
+
+-- left join
+select * 
+from customer 
+left join orders
+on customer.id=orders.id;
+
+-- full join
+select *
+from customer
+left join orders
+on customer.id=orders.id
+union 
+select *
+from customer
+right join orders 
+on customer.id=orders.id;
+
+-- cross join
+select * 
+from customer
+cross join orders;
+
+-- create a table 
+create table self(
+id int primary key,
+name varchar(50),
+mentor_name varchar(40));
+
+insert into self (id,name, mentor_name)
+values
+(1,"siva","Sai"),
+(2,"Sai","1"),
+(3,"Kumar","1"),
+(4,"riti","3");
+
+select * from self;
+
+-- self join
+select s1.name as mentor_name , s2.name as name
+from self as s1
+join self as s2
+where s1.id=s2.mentor_name;
+
+-- left exclusive join
+select * 
+from customer
+left join orders
+on customer.id=orders.id
+where orders.id is null;
+
+-- right exclusive join
+select * 
+from customer
+right join orders
+on customer.id = orders.id
+where customer.id is null;
+
+-- full exclusive join
+select * 
+from customer
+left join orders
+on customer.id=orders.id
+where orders.id is null
+union 
+select *
+from customer
+right join orders
+on customer.id=orders.id
+where customer.id is null;
+
+-- drop the employe table
+drop table employe; 
+
+-- create a table for employee
+create table employe(
+id int primary key,
+name varchar(30),
+age int,
+department varchar(15),
+city varchar(30),
+salary bigint);
+
+-- insert the values in the employe table
+insert into employe(id,name,age,department,city,salary)
+values
+(1,"Rahul",25,"IT","Hyderabad",1506),
+(2,"afsara",30,"HR","Banglore",2002),
+(3,"siva",35,"IT","pune",2500),
+(4,"sai",40,"Marketing","Mumbai",2200);
+
+select * from employe;
+use employe;
+-- find the salary of the who are having the greather then min salary
+-- min salary
+select min(salary)
+from employe;
+
+-- greater thgan the min salary
+select name,age , salary
+from employe
+where salary>(select min(salary) from employe);
+
+-- find the employees with minimum age
+select name,age from employe
+where age=(select min(age) from employe);
+
+-- 3th highest salary in the given employes
+select * from employe
+order by salary desc
+limit 2,1;
+
+select distinct salary
+from employe 
+order by salary desc
+limit 3,1;
+
+-- stored procedure
+delimiter //
+create procedure getall()
+begin
+select * 
+from employe
+order by salary ;
+end //
+delimiter ;
+
+-- call that function
+call getall();
+
+-- views in sql
+create view asdf as
+select id,name,department 
+from employe ;
+
+select name 
+from asdf;
+
